@@ -23,7 +23,7 @@ data "hcp_packer_version" "ubuntu" {
 }
 
 data "hcp_packer_artifact" "ubuntu_us_east_2" {
-  bucket_name         = "learn-packer-run-tasks"
+  bucket_name         = "ubuntu"
   platform            = "aws"
   version_fingerprint = data.hcp_packer_version.ubuntu.fingerprint
   region              = "us-east-2"

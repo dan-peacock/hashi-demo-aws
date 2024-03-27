@@ -2,18 +2,25 @@ provider "aws" {
   region = var.region
 }
 
-data "aws_ami" "amazon_linux" {
-  most_recent = true
-  owners    = ["amazon"]
+// data "aws_ami" "amazon_linux" {
+//   most_recent = true
+//   owners    = ["amazon"]
 
-  filter {
-    name   = "name"
-    values = ["amzn2-ami-hvm-*-x86_64-gp2"]
-  }
+//   filter {
+//     name   = "name"
+//     values = ["amzn2-ami-hvm-*-x86_64-gp2"]
+//   }
+// }
+
+data "hcp_packer_artifact" "ubuntu" {
+  bucket_name   = "ubuntu"
+  channel_name  = "latest"
+  platform      = "aws"
+  region        = "us-east-2"
 }
 
 resource "aws_instance" "web" {
-  ami           = data.aws_ami.amazon_linux.id
+  ami           = data.hcp_packer_artifact.ubuntu.id
   instance_type = "t2.micro"
 
   user_data = <<-EOF

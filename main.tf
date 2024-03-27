@@ -19,7 +19,7 @@ provider "hcp" {
 
 data "hcp_packer_artifact" "ubuntu" {
   bucket_name   = "ubuntu"
-  channel_name  = "latest"
+  channel_name  = "First-version"
   platform      = "aws"
   region        = "us-east-2"
 }

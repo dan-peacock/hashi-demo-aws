@@ -2,6 +2,11 @@ provider "aws" {
   region = var.region
 }
 
+provider "hcp" {
+  client_id     = var.hcp_client_id
+  client_secret = var.hcp_secret_id
+}
+
 // data "aws_ami" "amazon_linux" {
 //   most_recent = true
 //   owners    = ["amazon"]

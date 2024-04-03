@@ -31,7 +31,7 @@ data "hcp_packer_artifact" "ubuntu_us_east_2" {
 
 resource "aws_instance" "web" {
   ami           = data.hcp_packer_artifact.ubuntu_us_east_2.external_identifier
-  instance_type = "t2.micro"
+  instance_type = var.instance_size
 
   user_data = <<-EOF
     #!/bin/bash

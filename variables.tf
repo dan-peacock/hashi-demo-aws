@@ -8,3 +8,6 @@ variable "hcp_client_id" {
 }
 variable "hcp_secret_id" {
 }
+variable "instance_size" {
+  default = "t2.micro"
+}

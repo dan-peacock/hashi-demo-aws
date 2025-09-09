@@ -2,45 +2,38 @@ provider "aws" {
   region = var.region
 }
 
-provider "hcp" {
-  client_id     = var.hcp_client_id
-  client_secret = var.hcp_secret_id
+variable "region" {
+  description = "AWS region to deploy into"
+  type        = string
+  default     = "us-east-2"
 }
 
-// data "aws_ami" "amazon_linux" {
-//   most_recent = true
-//   owners    = ["amazon"]
-
-//   filter {
-//     name   = "name"
-//     values = ["amzn2-ami-hvm-*-x86_64-gp2"]
-//   }
-// }
-
-data "hcp_packer_version" "ubuntu" {
-  bucket_name  = "ubuntu"
-  channel_name = "First-version"
+variable "instance_size" {
+  description = "EC2 instance size"
+  type        = string
+  default     = "t2.micro"
 }
 
-data "hcp_packer_artifact" "ubuntu_us_east_2" {
-  bucket_name         = "ubuntu"
-  platform            = "aws"
-  version_fingerprint = data.hcp_packer_version.ubuntu.fingerprint
-  region              = "us-east-2"
+variable "ami_id" {
+  description = "Static AMI ID to use (must exist in the chosen region)"
+  type        = string
+  default     = "ami-0123456789abcdef0" # <-- replace with your chosen AMI
 }
 
 resource "aws_instance" "web" {
-  ami           = data.hcp_packer_artifact.ubuntu_us_east_2.external_identifier
+  ami           = var.ami_id
   instance_type = var.instance_size
 
   user_data = <<-EOF
     #!/bin/bash
     sudo yum update -y
-    sudo yum install httpd -y
+    sudo yum install -y httpd
     sudo systemctl enable httpd
     sudo systemctl start httpd
     echo "<html><body><div>Hello, world!</div></body></html>" > /var/www/html/index.html
-    EOF
+  EOF
 
-  #tags = var.tags
+  tags = {
+    Name = "static-ami-web"
+  }
 }

@@ -2,18 +2,6 @@ provider "aws" {
   region = var.region
 }
 
-variable "region" {
-  description = "AWS region to deploy into"
-  type        = string
-  default     = "us-east-2"
-}
-
-variable "instance_size" {
-  description = "EC2 instance size"
-  type        = string
-  default     = "t2.micro"
-}
-
 variable "ami_id" {
   description = "Static AMI ID to use (must exist in the chosen region)"
   type        = string
